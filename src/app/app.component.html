@@ -1,0 +1,67 @@
+<!-- HeaderComponent to be displayed as part of AppComponent -->
+<app-header></app-header>
+<!-- ​Error Message -->
+
+<div class="eroorStyle" *ngIf="flag">
+  <label class="error-message">{{ errMessage }}</label>
+  <button (click)="errorDisplays()">Clear Message</button>
+
+</div>
+
+<!-- To add notes -->
+<mat-expansion-panel class="noteInputContainer">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Take a note
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="noteInputs">
+    <!-- title -->
+    <mat-form-field>
+      <input [(ngModel)]="note.title" name="title" matInput placeholder="Enter Note title" />
+    </mat-form-field>
+    <!-- text -->
+    <mat-form-field>
+      <textarea
+        name="text"
+        [(ngModel)]="note.text"
+        matInput
+        placeholder="Enter Note text"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div class="noteSubmit">
+    <button mat-button (click)="takeNote()" color="primary">Done</button>
+    <button mat-button (click)="onUpdate(note.id)" color="primary">Update</button>
+  </div>
+</mat-expansion-panel>
+
+<!-- Undo​ -->
+<mat-card>
+
+    <button  type="button" class="close" aria-label="Close" (click)="takeNoteTwo()" aria-hidden="true">
+      Undelete
+    </button>
+    
+</mat-card>
+
+<!-- Load and display the collection of notes from server as Material Cards with card title set to note title and card content set to note text  -->
+<div class="container">
+  <div class="pagination-container">
+      <pagination-controls (pageChange)="p=$event"></pagination-controls>
+  </div>
+    <mat-card class="noteCard" *ngFor="let mynote of notes | paginate:{itemsPerPage: 4, currentPage:p};">
+  
+        <button type="button" class="close" aria-label="Close">
+          <span (click)="deleteAtIndex(mynote.id)" aria-hidden="true">Tear</span>
+        </button>
+        <button  type="button" class="close" aria-label="Close">
+          <span (click)="editStudent(mynote)" aria-hidden="true">Edit</span>
+        </button>
+          <br>
+        <mat-card-title>{{ mynote.title }}</mat-card-title>
+        <mat-card-content>{{ mynote.text }}</mat-card-content>
+      </mat-card>
+</div>
+
+
